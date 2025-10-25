@@ -714,33 +714,6 @@
                         <p>Effective weed management to keep your garden looking pristine.</p>
                     </div>
                 </div>
-                <div class="service-card">
-                    <div class="service-image">
-                        <img src="https://image.pollinations.ai/prompt/Realistic%20photo%20of%20a%20landscaper%20raking%20and%20bagging%20fallen%20leaves%20during%20an%20autumn%20garden%20cleanup%2C%20wheelbarrow%2C%20photorealistic" alt="Landscaper raking and bagging fallen leaves beside a wheelbarrow during an autumn garden cleanup">
-                    </div>
-                    <div class="service-content">
-                        <h3>Garden Cleanups</h3>
-                        <p>Seasonal garden cleanups to refresh and revitalize your outdoor space.</p>
-                    </div>
-                </div>
-                <div class="service-card">
-                    <div class="service-image">
-                        <img src="https://image.pollinations.ai/prompt/Realistic%20photo%20of%20a%20technician%20installing%20a%20smart%20garden%20irrigation%20system%20with%20drip%20lines%20and%20control%20panel%2C%20sunny%20backyard%2C%20photorealistic" alt="Technician installing a smart garden irrigation system with drip lines and a control panel in a sunny backyard">
-                    </div>
-                    <div class="service-content">
-                        <h3>Irrigation</h3>
-                        <p>Installation and maintenance of efficient irrigation systems.</p>
-                    </div>
-                </div>
-                <div class="service-card">
-                    <div class="service-image">
-                        <img src="https://image.pollinations.ai/prompt/Realistic%20photo%20of%20a%20gardener%20loading%20bags%20of%20garden%20waste%20into%20a%20utility%20trailer%20for%20recycling%2C%20green%20yard%2C%20photorealistic" alt="Gardener loading bags of garden waste into a utility trailer for recycling in a green yard">
-                    </div>
-                    <div class="service-content">
-                        <h3>Waste Removal</h3>
-                        <p>Eco-friendly disposal of garden waste and clippings.</p>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
