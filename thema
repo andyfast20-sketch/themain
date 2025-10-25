@@ -81,6 +81,113 @@
             background-color: #f57c00;
         }
 
+        .whatsapp-button {
+            position: fixed;
+            bottom: 28px;
+            right: 32px;
+            z-index: 1200;
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 28px;
+            background: linear-gradient(135deg, #25d366 0%, #128c7e 45%, #075e54 100%);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 999px;
+            box-shadow: 0 18px 35px rgba(7, 94, 84, 0.35);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            isolation: isolate;
+        }
+
+        .whatsapp-button::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.45), transparent 55%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .whatsapp-button:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 22px 40px rgba(7, 94, 84, 0.4);
+        }
+
+        .whatsapp-button:hover::after {
+            opacity: 1;
+        }
+
+        .whatsapp-button .icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            font-size: 22px;
+            box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .whatsapp-button .whatsapp-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.1;
+        }
+
+        .whatsapp-button .whatsapp-text span:first-child {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.85;
+        }
+
+        .whatsapp-button .whatsapp-text span:last-child {
+            font-size: 1.05rem;
+        }
+
+        @keyframes whatsapp-pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 18px rgba(37, 211, 102, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+            }
+        }
+
+        .whatsapp-button::before {
+            content: '';
+            position: absolute;
+            inset: -6px;
+            border-radius: inherit;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            animation: whatsapp-pulse 2.8s infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @media (max-width: 768px) {
+            .whatsapp-button {
+                bottom: 18px;
+                right: 18px;
+                left: auto;
+                padding: 14px 24px;
+                gap: 12px;
+            }
+
+            .whatsapp-button .whatsapp-text span:last-child {
+                font-size: 0.95rem;
+            }
+        }
+
         /* Header Styles */
         header {
             position: fixed;
@@ -1209,6 +1316,14 @@
             </div>
         </div>
     </section>
+
+    <a href="https://wa.me/447595289669" class="whatsapp-button" target="_blank" rel="noopener" aria-label="Chat with Pay As You Mow on WhatsApp">
+        <span class="icon"><i class="fa-brands fa-whatsapp"></i></span>
+        <div class="whatsapp-text">
+            <span>Message us on</span>
+            <span>WhatsApp</span>
+        </div>
+    </a>
 
     <!-- Footer -->
     <footer>
