@@ -211,27 +211,57 @@
 
         .service-card {
             background-color: var(--white);
-            border-radius: 10px;
+            border-radius: 24px;
             overflow: hidden;
             box-shadow: var(--shadow);
             transition: var(--transition);
-            text-align: center;
-            padding: 30px;
+            display: flex;
+            flex-direction: column;
         }
 
         .service-card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
         }
 
-        .service-icon {
-            font-size: 50px;
-            color: var(--primary);
-            margin-bottom: 20px;
+        .service-image {
+            position: relative;
+            width: 100%;
+            padding-top: 62%;
+            overflow: hidden;
         }
 
-        .service-card h3 {
+        .service-image img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: saturate(1.05);
+            transition: transform 0.5s ease;
+        }
+
+        .service-card:hover .service-image img {
+            transform: scale(1.05);
+        }
+
+        .service-content {
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            height: 100%;
+        }
+
+        .service-content h3 {
             font-size: 1.5rem;
-            margin-bottom: 15px;
+            margin: 0;
+        }
+
+        .service-content p {
+            color: var(--text-light);
+            margin: 0;
         }
 
         /* About Section */
@@ -560,7 +590,7 @@
             .hero h1 {
                 font-size: 2.5rem;
             }
-            
+
             .mobile-menu-btn {
                 display: block;
             }
@@ -587,9 +617,13 @@
             nav ul li {
                 margin: 0 0 15px 0;
             }
-            
+
             .section-title h2 {
                 font-size: 2rem;
+            }
+
+            .service-content {
+                padding: 24px;
             }
         }
 
@@ -601,9 +635,13 @@
             .hero p {
                 font-size: 1rem;
             }
-            
+
             .btn {
                 padding: 10px 25px;
+            }
+
+            .service-content {
+                padding: 20px;
             }
         }
     </style>
@@ -650,46 +688,58 @@
             </div>
             <div class="services-grid">
                 <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-leaf"></i>
+                    <div class="service-image">
+                        <img src="https://images.stockimg.ai/outputs/preview/6293b969-e1b1-4f7a-a561-3f636769b474/0_0.png" alt="Back view of a professional mowing a lawn with a push mower">
                     </div>
-                    <h3>Lawn Mowing</h3>
-                    <p>Professional lawn mowing with precision equipment for a perfectly manicured finish.</p>
+                    <div class="service-content">
+                        <h3>Lawn Mowing</h3>
+                        <p>Professional lawn mowing with precision equipment for a perfectly manicured finish.</p>
+                    </div>
                 </div>
                 <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-tree"></i>
+                    <div class="service-image">
+                        <img src="https://images.stockimg.ai/outputs/preview/50176e97-620f-40fe-9c02-d2e11df146dd/0_0.png" alt="Back view of a gardener trimming a tall hedge with electric shears">
                     </div>
-                    <h3>Hedge Trimming</h3>
-                    <p>Expert hedge trimming to maintain shape and promote healthy growth.</p>
+                    <div class="service-content">
+                        <h3>Hedge Trimming</h3>
+                        <p>Expert hedge trimming to maintain shape and promote healthy growth.</p>
+                    </div>
                 </div>
                 <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-seedling"></i>
+                    <div class="service-image">
+                        <img src="https://images.stockimg.ai/outputs/preview/b8802c5a-209d-4d63-8eb3-1a5416877f39/0_0.png" alt="Back view of a gardener applying eco-friendly weed control spray">
                     </div>
-                    <h3>Weed Control</h3>
-                    <p>Effective weed management to keep your garden looking pristine.</p>
+                    <div class="service-content">
+                        <h3>Weed Control</h3>
+                        <p>Effective weed management to keep your garden looking pristine.</p>
+                    </div>
                 </div>
                 <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-spa"></i>
+                    <div class="service-image">
+                        <img src="https://images.stockimg.ai/outputs/preview/9be6e229-e762-4d6c-b8dc-b9b0a2c6fde0/0_0.png" alt="Back view of a gardener collecting leaves during a seasonal garden cleanup">
                     </div>
-                    <h3>Garden Cleanups</h3>
-                    <p>Seasonal garden cleanups to refresh and revitalize your outdoor space.</p>
+                    <div class="service-content">
+                        <h3>Garden Cleanups</h3>
+                        <p>Seasonal garden cleanups to refresh and revitalize your outdoor space.</p>
+                    </div>
                 </div>
                 <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-tint"></i>
+                    <div class="service-image">
+                        <img src="https://images.stockimg.ai/outputs/preview/469ca6eb-02cc-40d6-86ba-8518ff7889b1/0_0.png" alt="Back view of a technician adjusting a smart irrigation control panel">
                     </div>
-                    <h3>Irrigation</h3>
-                    <p>Installation and maintenance of efficient irrigation systems.</p>
+                    <div class="service-content">
+                        <h3>Irrigation</h3>
+                        <p>Installation and maintenance of efficient irrigation systems.</p>
+                    </div>
                 </div>
                 <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-recycle"></i>
+                    <div class="service-image">
+                        <img src="https://images.stockimg.ai/outputs/preview/ca7b3ff2-43e6-4c7f-aba7-7f8bf457769e/0_0.png" alt="Back view of a gardener loading garden waste into a trailer for recycling">
                     </div>
-                    <h3>Waste Removal</h3>
-                    <p>Eco-friendly disposal of garden waste and clippings.</p>
+                    <div class="service-content">
+                        <h3>Waste Removal</h3>
+                        <p>Eco-friendly disposal of garden waste and clippings.</p>
+                    </div>
                 </div>
             </div>
         </div>
