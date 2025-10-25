@@ -633,78 +633,236 @@
             transform: scale(1.08);
         }
 
-        /* Pricing Section */
-        .pricing {
-            background-color: var(--white);
-        }
-
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .pricing-card {
-            background-color: var(--white);
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            text-align: center;
-            padding: 40px 30px;
-            transition: var(--transition);
+        /* FAQ Section */
+        .faq {
             position: relative;
+            background: linear-gradient(140deg, rgba(46, 125, 50, 0.08), rgba(26, 94, 32, 0.15));
+            overflow: hidden;
         }
 
-        .pricing-card.featured {
-            transform: scale(1.05);
-            border: 2px solid var(--primary);
-        }
-
-        .pricing-card.featured::before {
-            content: 'Most Popular';
+        .faq::before,
+        .faq::after {
+            content: "";
             position: absolute;
-            top: 0;
-            right: 0;
-            background-color: var(--primary);
-            color: var(--white);
-            padding: 5px 15px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            border-bottom-left-radius: 10px;
+            border-radius: 50%;
+            filter: blur(0.5px);
+            z-index: 0;
+            opacity: 0.4;
         }
 
-        .pricing-card:hover {
-            transform: translateY(-10px);
+        .faq::before {
+            width: 420px;
+            height: 420px;
+            top: -220px;
+            right: -140px;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.75) 0%, rgba(46, 125, 50, 0.25) 55%, transparent 100%);
         }
 
-        .pricing-card.featured:hover {
-            transform: scale(1.05) translateY(-10px);
+        .faq::after {
+            width: 320px;
+            height: 320px;
+            bottom: -180px;
+            left: -120px;
+            background: radial-gradient(circle at center, rgba(255, 152, 0, 0.35) 0%, rgba(46, 125, 50, 0.15) 65%, transparent 100%);
         }
 
-        .price {
-            font-size: 3rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin: 20px 0;
+        .faq .container {
+            position: relative;
+            z-index: 1;
         }
 
-        .price span {
-            font-size: 1rem;
+        .faq-content {
+            display: grid;
+            grid-template-columns: minmax(280px, 1fr) minmax(0, 1.3fr);
+            gap: 45px;
+            align-items: start;
+        }
+
+        .faq-highlight {
+            background: linear-gradient(160deg, rgba(255, 255, 255, 0.95), rgba(241, 248, 233, 0.85));
+            border-radius: 24px;
+            padding: 48px 40px;
+            box-shadow: 0 32px 60px rgba(37, 68, 35, 0.18);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .faq-highlight::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 152, 0, 0.12));
+            mix-blend-mode: soft-light;
+            pointer-events: none;
+        }
+
+        .faq-highlight h3 {
+            font-size: 2rem;
+            margin-bottom: 18px;
+        }
+
+        .faq-highlight p {
             color: var(--text-light);
+            margin-bottom: 22px;
+            font-size: 1.05rem;
         }
 
-        .pricing-features {
-            list-style: none;
-            margin: 30px 0;
+        .faq-promise {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            padding: 14px 0;
         }
 
-        .pricing-features li {
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
+        .faq-promise + .faq-promise {
+            border-top: 1px solid rgba(46, 125, 50, 0.12);
         }
 
-        .pricing-features li:last-child {
-            border-bottom: none;
+        .faq-promise-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.3rem;
+            box-shadow: 0 18px 32px rgba(37, 68, 35, 0.35);
+        }
+
+        .faq-promise-text strong {
+            display: block;
+            font-size: 1.05rem;
+            margin-bottom: 4px;
+        }
+
+        .faq-promise-text span {
+            display: block;
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .faq-cta {
+            margin-top: 32px;
+            padding: 26px 28px;
+            border-radius: 18px;
+            background: rgba(46, 125, 50, 0.08);
+            border: 1px solid rgba(46, 125, 50, 0.18);
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+        }
+
+        .faq-cta p {
+            margin-bottom: 16px;
+            font-size: 1rem;
+        }
+
+        .faq-accordion {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 26px;
+            padding: 18px;
+            box-shadow: 0 28px 65px rgba(37, 68, 35, 0.22);
+            backdrop-filter: blur(4px);
+        }
+
+        .faq-item {
+            border: 1px solid rgba(46, 125, 50, 0.14);
+            border-radius: 20px;
+            background: linear-gradient(125deg, rgba(255, 255, 255, 0.98), rgba(241, 248, 233, 0.86));
+            box-shadow: 0 10px 26px rgba(37, 68, 35, 0.08);
+            transition: var(--transition);
+            overflow: hidden;
+        }
+
+        .faq-item + .faq-item {
+            margin-top: 12px;
+        }
+
+        .faq-item.active {
+            border-color: rgba(46, 125, 50, 0.45);
+            box-shadow: 0 26px 60px rgba(37, 68, 35, 0.2);
+        }
+
+        .faq-question {
+            width: 100%;
+            border: none;
+            background: transparent;
+            padding: 22px 26px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            font-family: inherit;
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .faq-question:hover,
+        .faq-item.active .faq-question {
+            color: var(--primary-dark);
+        }
+
+        .faq-question span {
+            flex: 1;
+        }
+
+        .faq-toggle {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 1px solid rgba(46, 125, 50, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.2rem;
+            transition: var(--transition);
+            flex-shrink: 0;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .faq-toggle::before {
+            content: '+';
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .faq-item.active .faq-toggle {
+            background: var(--primary);
+            color: var(--white);
+            border-color: rgba(46, 125, 50, 0.4);
+            box-shadow: 0 16px 32px rgba(37, 68, 35, 0.32);
+        }
+
+        .faq-item.active .faq-toggle::before {
+            content: '−';
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            padding: 0 26px;
+            opacity: 0;
+            transition: max-height 0.45s ease, opacity 0.4s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            opacity: 1;
+            padding-bottom: 24px;
+        }
+
+        .faq-answer p {
+            color: var(--text-light);
+            font-size: 1.02rem;
+            line-height: 1.7;
+            margin-top: 4px;
+        }
+
+        .faq-answer p + p {
+            margin-top: 12px;
         }
 
         /* Testimonials Section */
@@ -917,12 +1075,16 @@
                 padding: 40px;
             }
 
-            .pricing-card.featured {
-                transform: scale(1);
+            .faq-content {
+                grid-template-columns: 1fr;
             }
 
-            .pricing-card.featured:hover {
-                transform: translateY(-10px);
+            .faq-highlight {
+                order: 2;
+            }
+
+            .faq-accordion {
+                order: 1;
             }
         }
 
@@ -934,6 +1096,24 @@
             .about-content {
                 padding: 30px;
                 gap: 35px;
+            }
+
+            .faq-highlight {
+                padding: 38px 32px;
+            }
+
+            .faq-accordion {
+                padding: 16px;
+            }
+
+            .faq-question {
+                padding: 20px 22px;
+                font-size: 1.05rem;
+            }
+
+            .faq-toggle {
+                width: 34px;
+                height: 34px;
             }
 
             .mobile-menu-btn {
@@ -1016,6 +1196,18 @@
                 padding: 20px;
             }
 
+            .faq-highlight {
+                padding: 32px 26px;
+            }
+
+            .faq-cta {
+                padding: 22px;
+            }
+
+            .faq-question {
+                padding: 18px 20px;
+            }
+
             .logo {
                 font-size: 22px;
             }
@@ -1065,7 +1257,7 @@
                     <li><a href="#home">Home</a></li>
                     <li><a href="#services">Services</a></li>
                     <li><a href="#about">About</a></li>
-                    <li><a href="#pricing">Pricing</a></li>
+                    <li><a href="#faq">FAQ</a></li>
                     <li><a href="#testimonials">Testimonials</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
@@ -1162,48 +1354,104 @@
         </div>
     </section>
 
-    <!-- Pricing Section -->
-    <section class="pricing" id="pricing">
+    <!-- FAQ Section -->
+    <section class="faq" id="faq">
         <div class="container">
             <div class="section-title">
-                <h2>Our Pricing</h2>
-                <p>Transparent pricing with no hidden costs</p>
+                <h2>Frequently Asked Questions</h2>
+                <p>Everything you need to know about our flexible garden care service</p>
             </div>
-            <div class="pricing-grid">
-                <div class="pricing-card">
-                    <h3>Basic Care</h3>
-                    <div class="price">$45<span>/visit</span></div>
-                    <ul class="pricing-features">
-                        <li>Lawn Mowing & Edging</li>
-                        <li>Basic Weed Control</li>
-                        <li>Light Trimming</li>
-                        <li>Waste Removal</li>
-                    </ul>
-                    <a href="#contact" class="btn">Book Now</a>
+            <div class="faq-content">
+                <div class="faq-highlight">
+                    <h3>Your garden, your schedule</h3>
+                    <p>We created Pay As You Mow for homeowners who want exceptional results without complicated contracts. Tell us what you need, and we tailor each visit to your garden and your budget.</p>
+                    <div class="faq-promise">
+                        <div class="faq-promise-icon">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <div class="faq-promise-text">
+                            <strong>Flexible visits</strong>
+                            <span>Book maintenance only when you need it and adjust anytime.</span>
+                        </div>
+                    </div>
+                    <div class="faq-promise">
+                        <div class="faq-promise-icon">
+                            <i class="fas fa-seedling"></i>
+                        </div>
+                        <div class="faq-promise-text">
+                            <strong>Professionally equipped</strong>
+                            <span>Our gardeners arrive with premium tools and eco-friendly treatments.</span>
+                        </div>
+                    </div>
+                    <div class="faq-promise">
+                        <div class="faq-promise-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="faq-promise-text">
+                            <strong>Satisfaction guaranteed</strong>
+                            <span>We treat every lawn like our own and tidy everything before we leave.</span>
+                        </div>
+                    </div>
+                    <div class="faq-cta">
+                        <p>Have a specific question? We love hearing about new projects and ideas for your outdoor space.</p>
+                        <a href="#contact" class="btn btn-secondary">Talk to our team</a>
+                    </div>
                 </div>
-                <div class="pricing-card featured">
-                    <h3>Standard Care</h3>
-                    <div class="price">$75<span>/visit</span></div>
-                    <ul class="pricing-features">
-                        <li>Everything in Basic</li>
-                        <li>Hedge Trimming</li>
-                        <li>Comprehensive Weed Control</li>
-                        <li>Plant Health Check</li>
-                        <li>Seasonal Cleanup</li>
-                    </ul>
-                    <a href="#contact" class="btn">Book Now</a>
-                </div>
-                <div class="pricing-card">
-                    <h3>Premium Care</h3>
-                    <div class="price">$120<span>/visit</span></div>
-                    <ul class="pricing-features">
-                        <li>Everything in Standard</li>
-                        <li>Garden Bed Maintenance</li>
-                        <li>Fertilization Service</li>
-                        <li>Irrigation Check</li>
-                        <li>Priority Scheduling</li>
-                    </ul>
-                    <a href="#contact" class="btn">Book Now</a>
+                <div class="faq-accordion" role="list">
+                    <div class="faq-item active" role="listitem">
+                        <button class="faq-question" type="button" aria-expanded="true">
+                            <span>How does the pay-as-you-go service work?</span>
+                            <span class="faq-toggle" aria-hidden="true"></span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Choose the services you need for each visit—mowing, weeding, hedge care, seasonal tidying and more. We confirm the plan, carry out the work, and you settle up afterwards. No membership fees, no cancellation penalties.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item" role="listitem">
+                        <button class="faq-question" type="button" aria-expanded="false">
+                            <span>Can I arrange regular maintenance visits?</span>
+                            <span class="faq-toggle" aria-hidden="true"></span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Absolutely. Many clients book weekly, fortnightly, or monthly visits during the growing season. We can adjust the frequency at any time to match the pace of your garden and your schedule.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item" role="listitem">
+                        <button class="faq-question" type="button" aria-expanded="false">
+                            <span>Do you bring equipment and dispose of garden waste?</span>
+                            <span class="faq-toggle" aria-hidden="true"></span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Yes. Our team arrives with commercial-grade mowers, strimmers, hedge trimmers and organic treatments. We collect and remove green waste as standard so you’re left with a flawless finish.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item" role="listitem">
+                        <button class="faq-question" type="button" aria-expanded="false">
+                            <span>Which areas do you cover?</span>
+                            <span class="faq-toggle" aria-hidden="true"></span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>We serve Tameside and the surrounding neighbourhoods, including Ashton-under-Lyne, Denton, Hyde, Mossley, and Stalybridge. Not sure if you’re within reach? Send us a message and we’ll let you know right away.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item" role="listitem">
+                        <button class="faq-question" type="button" aria-expanded="false">
+                            <span>Can you help with one-off projects or garden makeovers?</span>
+                            <span class="faq-toggle" aria-hidden="true"></span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Definitely. From pre-party spruce-ups to end-of-tenancy tidy-ups and seasonal transformations, we tailor a project plan with transparent pricing so you know exactly what to expect.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item" role="listitem">
+                        <button class="faq-question" type="button" aria-expanded="false">
+                            <span>How soon can you visit once I get in touch?</span>
+                            <span class="faq-toggle" aria-hidden="true"></span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>We aim to schedule consultations within 48 hours and can often complete the first visit within a week, depending on the season. Urgent jobs are prioritised whenever possible—just let us know your timeframe.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1345,7 +1593,7 @@
                         <li><a href="#home">Home</a></li>
                         <li><a href="#services">Services</a></li>
                         <li><a href="#about">About Us</a></li>
-                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="#faq">FAQ</a></li>
                         <li><a href="#contact">Contact</a></li>
                     </ul>
                 </div>
@@ -1461,7 +1709,61 @@
             testimonials[currentTestimonial].classList.add('active');
         }
         
-        setInterval(rotateTestimonials, 5000);
+        if (testimonialDots.length > 0 && testimonials.length > 0) {
+            setInterval(rotateTestimonials, 5000);
+        }
+
+        // FAQ accordion
+        const faqItems = document.querySelectorAll('.faq-item');
+
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            const answer = item.querySelector('.faq-answer');
+
+            if (!question || !answer) {
+                return;
+            }
+
+            if (item.classList.contains('active')) {
+                question.setAttribute('aria-expanded', 'true');
+                answer.style.maxHeight = answer.scrollHeight + 'px';
+            } else {
+                question.setAttribute('aria-expanded', 'false');
+            }
+
+            question.addEventListener('click', () => {
+                const isOpen = item.classList.contains('active');
+
+                faqItems.forEach(otherItem => {
+                    if (otherItem === item) {
+                        return;
+                    }
+
+                    otherItem.classList.remove('active');
+
+                    const otherQuestion = otherItem.querySelector('.faq-question');
+                    const otherAnswer = otherItem.querySelector('.faq-answer');
+
+                    if (otherQuestion) {
+                        otherQuestion.setAttribute('aria-expanded', 'false');
+                    }
+
+                    if (otherAnswer) {
+                        otherAnswer.style.maxHeight = null;
+                    }
+                });
+
+                if (!isOpen) {
+                    item.classList.add('active');
+                    question.setAttribute('aria-expanded', 'true');
+                    answer.style.maxHeight = answer.scrollHeight + 'px';
+                } else {
+                    item.classList.remove('active');
+                    question.setAttribute('aria-expanded', 'false');
+                    answer.style.maxHeight = null;
+                }
+            });
+        });
 
         // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
