@@ -785,7 +785,7 @@
 
     <!-- Hero Section -->
     <section class="hero" id="home">
-        <div class="hero-slide active" style="--hero-image: url('https://images.unsplash.com/photo-1594046782181-707c815d7f06?auto=format&fit=crop&w=1920&q=80');">
+        <div class="hero-slide active" style="--hero-image: url('https://image.pollinations.ai/prompt/Ultra%20realistic%20photo%20of%20a%20professional%20male%20gardener%20with%20olive%20skin%20pushing%20a%20lawn%20mower%20across%20a%20lush%20small%20urban%20garden%2C%20wearing%20khaki%20shorts%20and%20a%20green%20t-shirt%2C%20bright%20summer%20day%2C%20hyper-detailed%2C%208k');">
             <div class="container">
                 <div class="hero-content">
                     <h1>Garden Maintenance Service</h1>
@@ -797,7 +797,7 @@
                 </div>
             </div>
         </div>
-        <div class="hero-slide" style="--hero-image: url('https://images.unsplash.com/photo-1470246973918-29a93221c455?auto=format&fit=crop&w=1920&q=80');">
+        <div class="hero-slide" style="--hero-image: url('https://image.pollinations.ai/prompt/Ultra%20realistic%20photo%20of%20the%20same%20professional%20male%20gardener%20with%20olive%20skin%20using%20a%20grass%20strimmer%20in%20a%20manicured%20backyard%2C%20wearing%20khaki%20shorts%20and%20a%20green%20t-shirt%2C%20bright%20summer%20day%2C%20hyper-detailed%2C%208k');">
             <div class="container">
                 <div class="hero-content">
                     <h1>Garden Maintenance Service</h1>
