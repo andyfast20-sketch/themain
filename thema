@@ -149,7 +149,7 @@
         /* Hero Section */
         .hero {
             height: 100vh;
-            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80') no-repeat center center/cover;
+            background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url('https://image.pollinations.ai/prompt/man%20pushing%20a%20lawn%20mower%20on%20a%20small%20lawn%2C%20wearing%20casual%20shorts%20and%20a%20t-shirt%2C%20face%20out%20of%20frame%2C%20realistic%20photography%2C%20vibrant%20lighting') no-repeat center center/cover;
             display: flex;
             align-items: center;
             text-align: center;
