@@ -148,31 +148,147 @@
 
         /* Hero Section */
         .hero {
-            height: 100vh;
-            background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url('https://image.pollinations.ai/prompt/man%20pushing%20a%20lawn%20mower%20on%20a%20small%20lawn%2C%20wearing%20casual%20shorts%20and%20a%20t-shirt%2C%20face%20out%20of%20frame%2C%20realistic%20photography%2C%20vibrant%20lighting') no-repeat center center/cover;
+            position: relative;
+            min-height: 80vh;
+            color: var(--white);
+            overflow: hidden;
+        }
+
+        .hero-slide {
+            --hero-image: none;
+            position: absolute;
+            inset: 0;
             display: flex;
             align-items: center;
+            justify-content: center;
             text-align: center;
-            color: var(--white);
+            padding: 0 20px;
+            background-image: var(--hero-image);
+            background-size: cover;
+            background-position: center;
+            transition: opacity 0.8s ease;
+            opacity: 0;
+        }
+
+        .hero-slide::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.35));
+            z-index: 1;
+        }
+
+        .hero-slide::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: var(--hero-image);
+            background-size: cover;
+            background-position: center;
+            z-index: 2;
+            opacity: 0;
+            filter: brightness(0.95) saturate(1.05);
+        }
+
+        .hero-slide.active {
+            opacity: 1;
+            z-index: 2;
+        }
+
+        .hero-slide.melting {
+            opacity: 1;
+            z-index: 3;
+        }
+
+        .hero-slide.melting::after {
+            opacity: 1;
+            animation: meltAway 1.8s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+        }
+
+        .hero-slide .container {
+            position: relative;
+            z-index: 3;
+            width: 100%;
         }
 
         .hero-content {
             max-width: 800px;
             margin: 0 auto;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .hero-slide.active .hero-content {
+            animation: heroFadeIn 0.9s ease forwards 0.2s;
+        }
+
+        .hero-slide.melting .hero-content {
+            animation: heroFadeOut 0.4s ease forwards;
         }
 
         .hero h1 {
             font-size: 3.5rem;
             margin-bottom: 20px;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
         }
 
         .hero p {
             font-size: 1.2rem;
             margin-bottom: 30px;
-            max-width: 600px;
+            max-width: 650px;
             margin-left: auto;
             margin-right: auto;
+        }
+
+        .hero-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        @keyframes heroFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes heroFadeOut {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+        }
+
+        @keyframes meltAway {
+            0% {
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+                transform: translateY(0);
+                filter: blur(0px) saturate(1.05);
+            }
+            35% {
+                clip-path: polygon(0 0, 100% 0, 100% 88%, 85% 90%, 70% 95%, 55% 92%, 40% 96%, 25% 90%, 0 88%);
+                filter: blur(2px) saturate(1.1);
+            }
+            70% {
+                clip-path: polygon(0 35%, 15% 45%, 30% 55%, 50% 60%, 70% 58%, 85% 50%, 100% 45%, 100% 100%, 0 100%);
+                filter: blur(6px) saturate(1.15);
+            }
+            100% {
+                clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%);
+                transform: translateY(15%);
+                filter: blur(12px) saturate(1.2);
+                opacity: 0;
+            }
         }
 
         /* Services Section */
@@ -669,12 +785,28 @@
 
     <!-- Hero Section -->
     <section class="hero" id="home">
-        <div class="container">
-            <div class="hero-content">
-                <h1>Beautiful Gardens, Flexible Payments</h1>
-                <p>Professional garden maintenance with our unique pay-as-you-go model. No contracts, no commitments - just beautiful results.</p>
-                <a href="#contact" class="btn">Get a Free Quote</a>
-                <a href="#services" class="btn btn-secondary">Our Services</a>
+        <div class="hero-slide active" style="--hero-image: url('https://images.unsplash.com/photo-1594046782181-707c815d7f06?auto=format&fit=crop&w=1920&q=80');">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Garden Maintenance Service</h1>
+                    <p>Probably the best rates in Tameside.</p>
+                    <div class="hero-actions">
+                        <a href="#contact" class="btn">Get a Free Quote</a>
+                        <a href="#services" class="btn btn-secondary">Our Services</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-slide" style="--hero-image: url('https://images.unsplash.com/photo-1470246973918-29a93221c455?auto=format&fit=crop&w=1920&q=80');">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Garden Maintenance Service</h1>
+                    <p>Small gardens from as little as £11. Free quotes available.</p>
+                    <div class="hero-actions">
+                        <a href="#contact" class="btn">Get a Free Quote</a>
+                        <a href="#services" class="btn btn-secondary">Our Services</a>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -965,6 +1097,42 @@
                 header.classList.remove('scrolled');
             }
         });
+
+        // Hero Slider with Melting Effect
+        const heroSlides = document.querySelectorAll('.hero-slide');
+        let currentHeroSlide = 0;
+        let heroTransitioning = false;
+        const meltDuration = 1800;
+        const heroInterval = 9000;
+
+        function showHeroSlide(index) {
+            if (heroTransitioning || index === currentHeroSlide || !heroSlides[index]) {
+                return;
+            }
+
+            heroTransitioning = true;
+
+            const currentSlide = heroSlides[currentHeroSlide];
+            const nextSlide = heroSlides[index];
+
+            currentSlide.classList.add('melting');
+            nextSlide.classList.add('active');
+
+            setTimeout(() => {
+                currentSlide.classList.remove('active', 'melting');
+                currentHeroSlide = index;
+                heroTransitioning = false;
+            }, meltDuration);
+        }
+
+        if (heroSlides.length > 1) {
+            setInterval(() => {
+                const nextIndex = (currentHeroSlide + 1) % heroSlides.length;
+                showHeroSlide(nextIndex);
+            }, heroInterval);
+        } else if (heroSlides.length === 1) {
+            heroSlides[0].classList.add('active');
+        }
 
         // Testimonial Slider
         const testimonialDots = document.querySelectorAll('.testimonial-dot');
