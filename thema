@@ -166,8 +166,10 @@
             background-image: var(--hero-image);
             background-size: cover;
             background-position: center;
-            transition: opacity 0.8s ease;
             opacity: 0;
+            transform: scale(1.04);
+            transition: opacity 1s ease, transform 8s ease;
+            pointer-events: none;
         }
 
         .hero-slide::before {
@@ -178,31 +180,11 @@
             z-index: 1;
         }
 
-        .hero-slide::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image: var(--hero-image);
-            background-size: cover;
-            background-position: center;
-            z-index: 2;
-            opacity: 0;
-            filter: brightness(0.95) saturate(1.05);
-        }
-
         .hero-slide.active {
             opacity: 1;
             z-index: 2;
-        }
-
-        .hero-slide.melting {
-            opacity: 1;
-            z-index: 3;
-        }
-
-        .hero-slide.melting::after {
-            opacity: 1;
-            animation: meltAway 1.8s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+            transform: scale(1);
+            pointer-events: auto;
         }
 
         .hero-slide .container {
@@ -216,14 +198,12 @@
             margin: 0 auto;
             opacity: 0;
             transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
         }
 
         .hero-slide.active .hero-content {
-            animation: heroFadeIn 0.9s ease forwards 0.2s;
-        }
-
-        .hero-slide.melting .hero-content {
-            animation: heroFadeOut 0.4s ease forwards;
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .hero h1 {
@@ -247,49 +227,7 @@
             flex-wrap: wrap;
         }
 
-        @keyframes heroFadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes heroFadeOut {
-            from {
-                opacity: 1;
-                transform: translateY(0);
-            }
-            to {
-                opacity: 0;
-                transform: translateY(40px);
-            }
-        }
-
-        @keyframes meltAway {
-            0% {
-                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-                transform: translateY(0);
-                filter: blur(0px) saturate(1.05);
-            }
-            35% {
-                clip-path: polygon(0 0, 100% 0, 100% 88%, 85% 90%, 70% 95%, 55% 92%, 40% 96%, 25% 90%, 0 88%);
-                filter: blur(2px) saturate(1.1);
-            }
-            70% {
-                clip-path: polygon(0 35%, 15% 45%, 30% 55%, 50% 60%, 70% 58%, 85% 50%, 100% 45%, 100% 100%, 0 100%);
-                filter: blur(6px) saturate(1.15);
-            }
-            100% {
-                clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%);
-                transform: translateY(15%);
-                filter: blur(12px) saturate(1.2);
-                opacity: 0;
-            }
-        }
+        
 
         /* Services Section */
         .services {
@@ -797,11 +735,11 @@
                 </div>
             </div>
         </div>
-        <div class="hero-slide" style="--hero-image: url('https://image.pollinations.ai/prompt/Ultra%20realistic%20photo%20of%20the%20same%20professional%20male%20gardener%20with%20olive%20skin%20using%20a%20grass%20strimmer%20in%20a%20manicured%20backyard%2C%20wearing%20khaki%20shorts%20and%20a%20green%20t-shirt%2C%20bright%20summer%20day%2C%20hyper-detailed%2C%208k');">
+        <div class="hero-slide" style="--hero-image: url('https://image.pollinations.ai/prompt/Ultra%20realistic%20photo%20of%20the%20same%20professional%20male%20gardener%20with%20olive%20skin%20on%20his%20hands%20and%20knees%20weeding%20a%20flower%20border%20in%20a%20well-kept%20urban%20garden%2C%20wearing%20khaki%20shorts%20and%20a%20green%20t-shirt%2C%20bright%20summer%20day%2C%20hyper-detailed%2C%208k');">
             <div class="container">
                 <div class="hero-content">
                     <h1>Garden Maintenance Service</h1>
-                    <p>Small gardens from as little as £11. Free quotes available.</p>
+                    <p>Detailed border care, weeding, and mowing tailored to your garden.</p>
                     <div class="hero-actions">
                         <a href="#contact" class="btn">Get a Free Quote</a>
                         <a href="#services" class="btn btn-secondary">Our Services</a>
@@ -1098,40 +1036,34 @@
             }
         });
 
-        // Hero Slider with Melting Effect
+        // Hero Slider
         const heroSlides = document.querySelectorAll('.hero-slide');
         let currentHeroSlide = 0;
-        let heroTransitioning = false;
-        const meltDuration = 1800;
-        const heroInterval = 9000;
+        const heroInterval = 4000;
 
         function showHeroSlide(index) {
-            if (heroTransitioning || index === currentHeroSlide || !heroSlides[index]) {
+            if (index === currentHeroSlide || !heroSlides[index]) {
                 return;
             }
-
-            heroTransitioning = true;
 
             const currentSlide = heroSlides[currentHeroSlide];
             const nextSlide = heroSlides[index];
 
-            currentSlide.classList.add('melting');
             nextSlide.classList.add('active');
+            currentSlide.classList.remove('active');
 
-            setTimeout(() => {
-                currentSlide.classList.remove('active', 'melting');
-                currentHeroSlide = index;
-                heroTransitioning = false;
-            }, meltDuration);
+            currentHeroSlide = index;
         }
 
-        if (heroSlides.length > 1) {
-            setInterval(() => {
-                const nextIndex = (currentHeroSlide + 1) % heroSlides.length;
-                showHeroSlide(nextIndex);
-            }, heroInterval);
-        } else if (heroSlides.length === 1) {
+        if (heroSlides.length > 0) {
             heroSlides[0].classList.add('active');
+
+            if (heroSlides.length > 1) {
+                setInterval(() => {
+                    const nextIndex = (currentHeroSlide + 1) % heroSlides.length;
+                    showHeroSlide(nextIndex);
+                }, heroInterval);
+            }
         }
 
         // Testimonial Slider
