@@ -2381,14 +2381,18 @@
         const selectedSlotInput = document.getElementById('selectedSlot');
 
         if (bookingGrid && bookingStatus && bookingModal && bookingForm && bookingSummary && bookingConfirmation && selectedSlotInput) {
-            const API_KEY = '165739256154-68t8gq34tnr7tllev1iclgrbdd7jatbn.apps.googleusercontent.com';
+            const API_KEY = bookingGrid.dataset.apiKey || '165739256154-68t8gq34tnr7tllev1iclgrbdd7jatbn.apps.googleusercontent.com';
             const CALENDAR_ID = bookingGrid.dataset.calendarId || 'primary';
+            const CALENDAR_TOKEN = bookingGrid.dataset.calendarToken || (typeof window !== 'undefined' ? window.GOOGLE_CALENDAR_TOKEN : '') || '';
+            const BOOKING_ENDPOINT = bookingGrid.dataset.bookingEndpoint || '';
             const MAX_AVAILABLE_DAYS = 5;
             const SLOT_DURATION_MINUTES = 30;
             const START_HOUR = 18;
             const END_HOUR = 20;
             const LOOKAHEAD_DAYS = 45;
             let lastFocusedElement = null;
+            const bookingSubmitButton = bookingForm.querySelector('button[type="submit"]');
+            let bookingSubmissionInFlight = false;
 
             const weekdayFormatter = new Intl.DateTimeFormat(undefined, { weekday: 'long' });
             const dateFormatter = new Intl.DateTimeFormat(undefined, { month: 'long', day: 'numeric' });
@@ -2412,7 +2416,9 @@
 
             async function fetchCalendarEvents(timeMin, timeMax) {
                 const endpoint = new URL(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(CALENDAR_ID)}/events`);
-                endpoint.searchParams.set('key', API_KEY);
+                if (API_KEY) {
+                    endpoint.searchParams.set('key', API_KEY);
+                }
                 endpoint.searchParams.set('singleEvents', 'true');
                 endpoint.searchParams.set('orderBy', 'startTime');
                 endpoint.searchParams.set('timeMin', timeMin);
@@ -2620,10 +2626,156 @@
                 bookingConfirmation.classList.remove('visible');
                 bookingForm.reset();
                 selectedSlotInput.value = '';
+                setBookingSubmitting(false);
+                bookingSubmissionInFlight = false;
 
                 if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
                     lastFocusedElement.focus();
                 }
+            }
+
+            function setBookingSubmitting(isSubmitting) {
+                if (!bookingForm) {
+                    return;
+                }
+
+                bookingForm.classList.toggle('is-submitting', Boolean(isSubmitting));
+
+                if (bookingSubmitButton) {
+                    bookingSubmitButton.disabled = Boolean(isSubmitting);
+                    if (isSubmitting) {
+                        bookingSubmitButton.setAttribute('aria-busy', 'true');
+                    } else {
+                        bookingSubmitButton.removeAttribute('aria-busy');
+                    }
+                }
+            }
+
+            function buildEventDescription({ customerName, customerEmail, customerPhone, customerNotes, slotStart, slotEnd }) {
+                const startDate = new Date(slotStart);
+                const endDate = new Date(slotEnd);
+                const dateLabel = `${weekdayFormatter.format(startDate)}, ${dateFormatter.format(startDate)}`;
+                const timeLabel = `${timeFormatter.format(startDate)} – ${timeFormatter.format(endDate)}`;
+
+                const lines = [
+                    `Customer: ${customerName || 'Not provided'}`,
+                    `Email: ${customerEmail || 'Not provided'}`,
+                    `Phone: ${customerPhone || 'Not provided'}`,
+                    '',
+                    `Slot: ${dateLabel} · ${timeLabel}`
+                ];
+
+                if (customerNotes) {
+                    lines.push('', 'Garden Notes:', customerNotes);
+                }
+
+                if (typeof window !== 'undefined' && window.location) {
+                    lines.push('', `Submitted via ${window.location.href}`);
+                }
+
+                return lines.join('\n');
+            }
+
+            async function createCalendarEvent(eventDetails) {
+                const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
+                const payload = {
+                    summary: eventDetails.summary,
+                    description: eventDetails.description,
+                    start: {
+                        dateTime: eventDetails.start,
+                        timeZone
+                    },
+                    end: {
+                        dateTime: eventDetails.end,
+                        timeZone
+                    },
+                    attendees: eventDetails.attendees,
+                    reminders: {
+                        useDefault: true
+                    },
+                    source: typeof window !== 'undefined' && window.location ? {
+                        title: typeof document !== 'undefined' && document.title ? document.title : 'Pay As You Mow',
+                        url: window.location.href
+                    } : undefined
+                };
+
+                if (eventDetails.location) {
+                    payload.location = eventDetails.location;
+                }
+
+                if (eventDetails.metadata) {
+                    const privateProperties = {};
+
+                    if (eventDetails.metadata.customerPhone) {
+                        privateProperties.customerPhone = eventDetails.metadata.customerPhone;
+                    }
+
+                    if (eventDetails.metadata.customerNotes) {
+                        privateProperties.customerNotes = eventDetails.metadata.customerNotes;
+                    }
+
+                    if (Object.keys(privateProperties).length > 0) {
+                        payload.extendedProperties = {
+                            private: privateProperties
+                        };
+                    }
+                }
+
+                if (!Array.isArray(payload.attendees) || payload.attendees.length === 0) {
+                    delete payload.attendees;
+                }
+
+                const requestInit = {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                };
+
+                if (BOOKING_ENDPOINT) {
+                    const response = await fetch(BOOKING_ENDPOINT, {
+                        ...requestInit,
+                        body: JSON.stringify({
+                            calendarId: CALENDAR_ID,
+                            event: payload
+                        })
+                    });
+                    if (!response.ok) {
+                        const errorText = await response.text().catch(() => '');
+                        throw new Error(errorText || `Booking endpoint responded with status ${response.status}`);
+                    }
+                    return response.json().catch(() => null);
+                }
+
+                const endpoint = new URL(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(CALENDAR_ID)}/events`);
+
+                if (CALENDAR_TOKEN) {
+                    requestInit.headers.Authorization = `Bearer ${CALENDAR_TOKEN}`;
+                } else if (API_KEY) {
+                    endpoint.searchParams.set('key', API_KEY);
+                }
+
+                const response = await fetch(endpoint.toString(), requestInit);
+
+                if (!response.ok) {
+                    let errorMessage = `Calendar request failed with status ${response.status}`;
+                    try {
+                        const errorBody = await response.json();
+                        if (errorBody && errorBody.error && errorBody.error.message) {
+                            errorMessage = errorBody.error.message;
+                        }
+                    } catch (parseError) {
+                        const fallbackText = await response.text().catch(() => '');
+                        if (fallbackText) {
+                            errorMessage = fallbackText;
+                        }
+                    }
+
+                    throw new Error(errorMessage);
+                }
+
+                return response.json().catch(() => null);
             }
 
             if (bookingModalClose) {
@@ -2641,8 +2793,12 @@
                 }
             });
 
-            bookingForm.addEventListener('submit', event => {
+            bookingForm.addEventListener('submit', async event => {
                 event.preventDefault();
+
+                if (bookingSubmissionInFlight) {
+                    return;
+                }
 
                 if (!selectedSlotInput.value) {
                     bookingConfirmation.textContent = 'Please choose an appointment slot to continue.';
@@ -2650,12 +2806,72 @@
                     return;
                 }
 
-                bookingConfirmation.textContent = 'Thank you! We’ve pencilled in your visit and will send confirmation shortly.';
-                bookingConfirmation.classList.add('visible');
+                const [slotStart, slotEnd] = selectedSlotInput.value.split('|');
 
-                setTimeout(() => {
-                    closeBookingModal();
-                }, 2200);
+                if (!slotStart || !slotEnd) {
+                    bookingConfirmation.textContent = 'We couldn’t read the selected appointment slot. Please choose a slot again.';
+                    bookingConfirmation.classList.add('visible');
+                    return;
+                }
+
+                const formData = new FormData(bookingForm);
+                const customerName = (formData.get('customerName') || '').toString().trim();
+                const customerEmail = (formData.get('customerEmail') || '').toString().trim();
+                const customerPhone = (formData.get('customerPhone') || '').toString().trim();
+                const customerNotes = (formData.get('customerNotes') || '').toString().trim();
+
+                const summary = customerName ? `Garden consultation with ${customerName}` : 'Garden consultation';
+                const description = buildEventDescription({
+                    customerName,
+                    customerEmail,
+                    customerPhone,
+                    customerNotes,
+                    slotStart,
+                    slotEnd
+                });
+
+                const eventDetails = {
+                    summary,
+                    description,
+                    start: slotStart,
+                    end: slotEnd,
+                    attendees: customerEmail ? [{
+                        email: customerEmail,
+                        displayName: customerName || undefined
+                    }] : [],
+                    metadata: {
+                        customerName,
+                        customerEmail,
+                        customerPhone,
+                        customerNotes
+                    }
+                };
+
+                bookingSubmissionInFlight = true;
+                setBookingSubmitting(true);
+                bookingConfirmation.textContent = 'Saving your booking…';
+                bookingConfirmation.classList.add('visible');
+                let submissionSucceeded = false;
+
+                try {
+                    await createCalendarEvent(eventDetails);
+                    bookingConfirmation.textContent = 'All set! We’ve added the visit to your calendar and emailed the details.';
+                    await loadCalendarAvailability();
+                    submissionSucceeded = true;
+
+                    setTimeout(() => {
+                        closeBookingModal();
+                    }, 2200);
+                } catch (error) {
+                    console.error('Failed to create calendar event:', error);
+                    bookingConfirmation.textContent = 'We couldn’t save your booking automatically. Please call or email us and we’ll confirm it manually.';
+                    bookingConfirmation.classList.add('visible');
+                } finally {
+                    bookingSubmissionInFlight = false;
+                    if (!submissionSucceeded) {
+                        setBookingSubmitting(false);
+                    }
+                }
             });
 
             async function loadCalendarAvailability() {
