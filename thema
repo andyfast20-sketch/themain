@@ -81,6 +81,22 @@
             background-color: #f57c00;
         }
 
+        .btn-quote {
+            background: linear-gradient(135deg, #ffb347, #ff7e5f);
+            padding: 10px 26px;
+            font-size: 0.95rem;
+            border-radius: 999px;
+            box-shadow: 0 12px 22px rgba(255, 126, 95, 0.25);
+            text-transform: none;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-quote:hover {
+            background: linear-gradient(135deg, #ff9566, #ff5f6d);
+            transform: translateY(-2px);
+            box-shadow: 0 16px 28px rgba(255, 95, 109, 0.3);
+        }
+
         .whatsapp-button {
             position: fixed;
             bottom: 28px;
@@ -1377,7 +1393,7 @@
                     <h3>Meet Your Gardener</h3>
                     <p>Hi, I’m Andy, a dedicated garden maintenance professional with 14 years of experience serving Audenshaw and Denton. I take pride in delivering high-quality service at competitive rates while helping customers maintain beautiful outdoor spaces.</p>
                     <p>Gardening is more than a job—it’s my passion. I enjoy working in nature, meeting people, and staying active. As I operate part-time, availability is limited, but I always strive to accommodate my customers. If you're looking for a reliable gardener, feel free to get in touch!</p>
-                    <a href="#contact" class="btn">Contact Us Today</a>
+                    <a href="#contact" class="btn btn-quote">Arrange a Free Quote</a>
                 </div>
                 <div class="about-video">
                     <iframe src="https://www.youtube.com/embed/oJrPPeow__s?si=4qciSvhRowzZ9yMh" title="Pay As You Mow introduction video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
