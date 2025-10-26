@@ -2052,7 +2052,7 @@
 
             <p class="booking-status" id="bookingStatus">Checking the latest availability…</p>
 
-            <div class="booking-grid" id="bookingGrid" aria-live="polite" aria-busy="true" data-calendar-id="primary"></div>
+            <div class="booking-grid" id="bookingGrid" aria-live="polite" aria-busy="true" data-calendar-id="primary" data-api-key="AIzaSyBNq41YmSJrEES1bRT3FYh8hbQ5ZhgvzCM"></div>
 
             <div class="booking-legend" role="list" aria-label="Availability legend">
                 <span class="legend-item" role="listitem"><span class="legend-dot available"></span> Plenty of slots</span>
@@ -2381,7 +2381,7 @@
         const selectedSlotInput = document.getElementById('selectedSlot');
 
         if (bookingGrid && bookingStatus && bookingModal && bookingForm && bookingSummary && bookingConfirmation && selectedSlotInput) {
-            const API_KEY = bookingGrid.dataset.apiKey || '165739256154-68t8gq34tnr7tllev1iclgrbdd7jatbn.apps.googleusercontent.com';
+            const API_KEY = bookingGrid.dataset.apiKey || 'AIzaSyBNq41YmSJrEES1bRT3FYh8hbQ5ZhgvzCM';
             const CALENDAR_ID = bookingGrid.dataset.calendarId || 'primary';
             const CALENDAR_TOKEN = bookingGrid.dataset.calendarToken || (typeof window !== 'undefined' ? window.GOOGLE_CALENDAR_TOKEN : '') || '';
             const BOOKING_ENDPOINT = bookingGrid.dataset.bookingEndpoint || '';
