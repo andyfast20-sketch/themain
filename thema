@@ -613,6 +613,16 @@
             z-index: 1;
         }
 
+        .about-text p {
+            text-align: justify;
+        }
+
+        .about-text .btn-quote {
+            margin-top: 24px;
+            font-size: 0.85rem;
+            padding: 8px 22px;
+        }
+
         .about-video {
             flex: 1;
             border-radius: 18px;
@@ -1365,7 +1375,7 @@
                     </div>
                     <div class="service-content">
                         <h3>Hedge Trimming</h3>
-                        <p>Expert hedge trimming to maintain shape and promote healthy growth.</p>
+                        <p>We trim and shape hedges and bushes to maintain a tidy appearance. Overgrown branches are carefully removed for healthy growth. Regular pruning enhances your garden's overall beauty.</p>
                     </div>
                 </div>
                 <div class="service-card">
@@ -1374,7 +1384,7 @@
                     </div>
                     <div class="service-content">
                         <h3>Weed Control</h3>
-                        <p>Effective weed management to keep your garden looking pristine.</p>
+                        <p>We keep your garden neat by removing weeds from flower beds, borders, and pathways. Edges are trimmed, debris is cleared, and plants are arranged to maintain a tidy and well-kept appearance.</p>
                     </div>
                 </div>
             </div>
