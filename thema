@@ -1039,58 +1039,460 @@
             background-color: var(--primary);
         }
 
-        /* Contact Section */
-        .contact {
-            background-color: var(--white);
+        /* Booking Section */
+        .booking {
+            position: relative;
+            background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.12), transparent 45%),
+                        linear-gradient(140deg, rgba(46, 125, 50, 0.95) 0%, rgba(27, 94, 32, 0.92) 55%, rgba(67, 160, 71, 0.9) 100%);
+            color: var(--white);
+            overflow: hidden;
         }
 
-        .contact-content {
+        .booking::before,
+        .booking::after {
+            content: '';
+            position: absolute;
+            width: 480px;
+            height: 480px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent 65%);
+            filter: blur(0.5px);
+            opacity: 0.45;
+            z-index: 0;
+        }
+
+        .booking::before {
+            top: -240px;
+            right: -120px;
+        }
+
+        .booking::after {
+            bottom: -220px;
+            left: -160px;
+        }
+
+        .booking .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .booking-header {
+            max-width: 780px;
+            margin: 0 auto 60px;
+            text-align: center;
+        }
+
+        .booking-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 18px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.12);
+            font-size: 0.85rem;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.88);
+            margin-bottom: 18px;
+        }
+
+        .booking-header h2 {
+            font-size: 2.8rem;
+            color: var(--white);
+            margin-bottom: 18px;
+        }
+
+        .booking-header p {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 1.05rem;
+        }
+
+        .booking-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin: 48px 0 60px;
+        }
+
+        .booking-step {
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 24px;
+            padding: 26px 24px;
+            text-align: left;
+            backdrop-filter: blur(6px);
+            box-shadow: 0 18px 45px rgba(12, 38, 18, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .booking-step::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            pointer-events: none;
+        }
+
+        .booking-step strong {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            margin-bottom: 14px;
+            background: linear-gradient(135deg, rgba(255, 183, 71, 0.95), rgba(255, 126, 95, 0.9));
+            color: var(--primary-dark);
+            font-weight: 700;
+            font-size: 1.05rem;
+        }
+
+        .booking-step h3 {
+            font-size: 1.25rem;
+            margin-bottom: 10px;
+            color: var(--white);
+        }
+
+        .booking-step p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+        }
+
+        .booking-status {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 1.05rem;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .booking-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 26px;
+            margin-bottom: 40px;
+        }
+
+        .booking-card {
+            background: rgba(255, 255, 255, 0.14);
+            border-radius: 26px;
+            padding: 26px;
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 20px 45px rgba(9, 35, 15, 0.25);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .booking-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            pointer-events: none;
+        }
+
+        .booking-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 28px 60px rgba(8, 30, 12, 0.32);
+        }
+
+        .booking-card.is-full {
+            background: rgba(255, 255, 255, 0.08);
+            opacity: 0.75;
+        }
+
+        .booking-card.is-limited .availability-pill {
+            background: rgba(255, 255, 255, 0.22);
+            color: #fffde7;
+        }
+
+        .booking-card.is-limited .availability-pill i {
+            color: #ffe082;
+        }
+
+        .booking-card-header {
             display: flex;
-            gap: 50px;
-        }
-
-        .contact-info {
-            flex: 1;
-        }
-
-        .contact-form {
-            flex: 1;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 30px;
-        }
-
-        .contact-icon {
-            font-size: 24px;
-            color: var(--primary);
-            margin-right: 15px;
-            margin-top: 5px;
-        }
-
-        .form-group {
+            align-items: center;
+            justify-content: space-between;
             margin-bottom: 20px;
         }
 
-        .form-control {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-family: 'Montserrat', sans-serif;
-            transition: var(--transition);
+        .booking-day {
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 0.4px;
         }
 
-        .form-control:focus {
-            border-color: var(--primary);
+        .booking-date {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.75);
+        }
+
+        .availability-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.16);
+            font-size: 0.85rem;
+        }
+
+        .availability-pill i {
+            color: #6ff0a7;
+        }
+
+        .booking-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+        }
+
+        .slot-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 11px 14px;
+            border-radius: 16px;
+            border: none;
+            background: rgba(255, 255, 255, 0.16);
+            color: var(--white);
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            cursor: pointer;
+            transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .slot-button:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.26);
+            box-shadow: 0 12px 28px rgba(8, 30, 12, 0.3);
+        }
+
+        .slot-button:focus-visible {
+            outline: 3px solid rgba(255, 255, 255, 0.65);
+            outline-offset: 3px;
+        }
+
+        .slot-button[disabled] {
+            cursor: not-allowed;
+            opacity: 0.55;
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: none;
+            transform: none;
+        }
+
+        .booking-card.is-full .availability-pill {
+            background: rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.55);
+        }
+
+        .booking-card.is-full .availability-pill i {
+            color: #ffcdd2;
+        }
+
+        .booking-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .legend-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+        }
+
+        .legend-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.45);
+        }
+
+        .legend-dot.available {
+            background: linear-gradient(135deg, rgba(255, 183, 71, 0.95), rgba(255, 126, 95, 0.9));
+            box-shadow: none;
+        }
+
+        .legend-dot.limited {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .legend-dot.unavailable {
+            background: rgba(0, 0, 0, 0.25);
+        }
+
+        .booking-support {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+            margin-top: 20px;
+        }
+
+        .support-card {
+            background: rgba(255, 255, 255, 0.12);
+            padding: 26px;
+            border-radius: 22px;
+            backdrop-filter: blur(6px);
+            box-shadow: 0 18px 40px rgba(10, 36, 15, 0.28);
+            position: relative;
+        }
+
+        .support-card h3 {
+            color: var(--white);
+            margin-bottom: 12px;
+            font-size: 1.25rem;
+        }
+
+        .support-card p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 14px;
+        }
+
+        .support-card .btn {
+            background: var(--white);
+            color: var(--primary);
+            text-transform: none;
+            letter-spacing: 0.5px;
+        }
+
+        .support-card .btn:hover {
+            background: #f1f8e9;
+            color: var(--primary-dark);
+        }
+
+        .booking-empty {
+            text-align: center;
+            padding: 40px;
+            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .booking-empty strong {
+            color: var(--white);
+        }
+
+        .booking-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 30, 15, 0.72);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .booking-modal.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .booking-modal-content {
+            background: var(--white);
+            color: var(--text);
+            width: min(520px, calc(100% - 40px));
+            border-radius: 24px;
+            padding: 32px;
+            position: relative;
+            box-shadow: 0 28px 60px rgba(0, 0, 0, 0.22);
+            animation: scaleIn 0.35s ease;
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.96);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .booking-modal-close {
+            position: absolute;
+            top: 18px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+
+        .booking-modal header h3 {
+            font-size: 1.65rem;
+            margin-bottom: 12px;
+            color: var(--primary-dark);
+        }
+
+        .booking-summary {
+            padding: 14px 18px;
+            border-radius: 16px;
+            background: #f1f8e9;
+            margin-bottom: 24px;
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        .booking-form .form-group {
+            margin-bottom: 18px;
+        }
+
+        .booking-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .booking-form input,
+        .booking-form textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            font-family: 'Montserrat', sans-serif;
+            transition: border 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .booking-form input:focus,
+        .booking-form textarea:focus {
+            border-color: rgba(46, 125, 50, 0.45);
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.15);
             outline: none;
         }
 
-        textarea.form-control {
-            min-height: 150px;
+        .booking-form textarea {
+            min-height: 120px;
             resize: vertical;
+        }
+
+        .booking-confirmation {
+            margin-top: 18px;
+            padding: 14px 16px;
+            border-radius: 14px;
+            background: #e8f5e9;
+            color: var(--primary);
+            font-weight: 600;
+            display: none;
+        }
+
+        .booking-confirmation.visible {
+            display: block;
         }
 
         /* Footer */
@@ -1176,20 +1578,20 @@
 
         /* Responsive Styles */
         @media (max-width: 992px) {
-            .about-content, .contact-content {
-                flex-direction: column;
-            }
-
-            .about-video, .about-text, .contact-info, .contact-form {
-                width: 100%;
-            }
-
             .about-content {
                 padding: 40px;
             }
 
             .faq-grid {
                 gap: 28px;
+            }
+
+            .booking-grid {
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            }
+
+            .support-card {
+                text-align: center;
             }
         }
 
@@ -1284,6 +1686,30 @@
             .service-content {
                 padding: 24px;
             }
+
+            .booking-header {
+                margin-bottom: 40px;
+            }
+
+            .booking-header h2 {
+                font-size: 2.3rem;
+            }
+
+            .booking-steps {
+                grid-template-columns: 1fr;
+            }
+
+            .booking-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .booking-slots {
+                grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            }
+
+            .booking-status {
+                font-size: 1rem;
+            }
         }
 
         @media (max-width: 576px) {
@@ -1326,6 +1752,30 @@
             .logo-icon {
                 width: 44px;
                 height: 44px;
+            }
+
+            .booking-header h2 {
+                font-size: 2rem;
+            }
+
+            .booking-header p {
+                font-size: 1rem;
+            }
+
+            .booking-steps {
+                margin: 32px 0 40px;
+            }
+
+            .booking-card {
+                padding: 22px;
+            }
+
+            .booking-legend {
+                gap: 14px;
+            }
+
+            .booking-modal-content {
+                padding: 26px;
             }
         }
     </style>
@@ -1371,7 +1821,7 @@
                     <li><a href="#faq">FAQ</a></li>
                     <li><a href="#voices">Voices</a></li>
                     <li><a href="#testimonials">Testimonials</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#booking">Book</a></li>
                 </ul>
             </nav>
         </div>
@@ -1385,7 +1835,7 @@
                     <h1>Garden Maintenance Service</h1>
                     <p>Probably the best rates in Tameside.</p>
                     <div class="hero-actions">
-                        <a href="#contact" class="btn">Get a Free Quote</a>
+                        <a href="#booking" class="btn">Get a Free Quote</a>
                         <a href="#services" class="btn btn-secondary">Our Services</a>
                     </div>
                 </div>
@@ -1397,7 +1847,7 @@
                     <h1>Garden Maintenance Service</h1>
                     <p>Detailed border care, weeding, and mowing tailored to your garden.</p>
                     <div class="hero-actions">
-                        <a href="#contact" class="btn">Get a Free Quote</a>
+                        <a href="#booking" class="btn">Get a Free Quote</a>
                         <a href="#services" class="btn btn-secondary">Our Services</a>
                     </div>
                 </div>
@@ -1456,7 +1906,7 @@
                     <h3>Meet Your Gardener</h3>
                     <p>Hi, I’m Andy, a dedicated garden maintenance professional with 14 years of experience serving Audenshaw and Denton. I take pride in delivering high-quality service at competitive rates while helping customers maintain beautiful outdoor spaces.</p>
                     <p>Gardening is more than a job—it’s my passion. I enjoy working in nature, meeting people, and staying active. As I operate part-time, availability is limited, but I always strive to accommodate my customers. If you're looking for a reliable gardener, feel free to get in touch!</p>
-                    <a href="#contact" class="btn btn-quote">Arrange a Free Quote</a>
+                    <a href="#booking" class="btn btn-quote">Arrange a Free Quote</a>
                 </div>
                 <div class="about-video">
                     <iframe src="https://www.youtube.com/embed/oJrPPeow__s?si=4qciSvhRowzZ9yMh" title="Pay As You Mow introduction video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
@@ -1573,84 +2023,90 @@
         </div>
     </section>
 
-    <!-- Contact Section -->
-    <section class="contact" id="contact">
+    <!-- Booking Section -->
+    <section class="booking" id="booking">
         <div class="container">
-            <div class="section-title">
-                <h2>Contact Us</h2>
-                <p>Get in touch for a free, no-obligation quote</p>
+            <div class="booking-header">
+                <span class="booking-eyebrow"><i class="fas fa-calendar-check" aria-hidden="true"></i> Reserve Your Free Quote</span>
+                <h2>Secure a 30-Minute Garden Consultation</h2>
+                <p>Choose an evening slot that suits you. We offer weekday consultations between <strong>6:00&nbsp;pm and 8:00&nbsp;pm</strong>, crafted to fit around busy schedules. Availability updates live from your connected Google Calendar.</p>
             </div>
-            <div class="contact-content">
-                <div class="contact-info">
-                    <h3>Get In Touch</h3>
-                    <p>Ready to transform your garden? Contact us today to discuss your needs and get a personalized quote.</p>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-map-marker-alt"></i>
-                        </div>
-                        <div>
-                            <h4>Our Location</h4>
-                            <p>123 Garden Street, Greenville, GL 12345</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-phone"></i>
-                        </div>
-                        <div>
-                            <h4>Phone Number</h4>
-                            <p>(555) 123-4567</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <div>
-                            <h4>Email Address</h4>
-                            <p>info@payasyoumow.com</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-clock"></i>
-                        </div>
-                        <div>
-                            <h4>Working Hours</h4>
-                            <p>Monday - Saturday: 8:00 AM - 6:00 PM</p>
-                        </div>
-                    </div>
+
+            <div class="booking-steps" aria-label="How to book">
+                <article class="booking-step">
+                    <strong>1</strong>
+                    <h3>Select a day</h3>
+                    <p>Browse the next five weekday evenings with open times pulled directly from your calendar.</p>
+                </article>
+                <article class="booking-step">
+                    <strong>2</strong>
+                    <h3>Pick a slot</h3>
+                    <p>Every visit lasts 30 minutes. We’ll hold your chosen time while you confirm the booking details.</p>
+                </article>
+                <article class="booking-step">
+                    <strong>3</strong>
+                    <h3>Confirm in seconds</h3>
+                    <p>Share the essentials and we’ll send a confirmation email plus a calendar invite automatically.</p>
+                </article>
+            </div>
+
+            <p class="booking-status" id="bookingStatus">Checking the latest availability…</p>
+
+            <div class="booking-grid" id="bookingGrid" aria-live="polite" aria-busy="true" data-calendar-id="primary"></div>
+
+            <div class="booking-legend" role="list" aria-label="Availability legend">
+                <span class="legend-item" role="listitem"><span class="legend-dot available"></span> Plenty of slots</span>
+                <span class="legend-item" role="listitem"><span class="legend-dot limited"></span> Limited spaces</span>
+                <span class="legend-item" role="listitem"><span class="legend-dot unavailable"></span> Fully booked</span>
+            </div>
+
+            <div class="booking-support">
+                <div class="support-card">
+                    <h3>Prefer to speak first?</h3>
+                    <p>Call our garden specialist team and we’ll lock in a quote visit for you.</p>
+                    <a class="btn" href="tel:+441234567890"><i class="fas fa-phone" aria-hidden="true"></i>&nbsp; Call 01234 567 890</a>
                 </div>
-                <div class="contact-form">
-                    <form id="contactForm">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Your Name" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="email" class="form-control" placeholder="Your Email" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="tel" class="form-control" placeholder="Your Phone">
-                        </div>
-                        <div class="form-group">
-                            <select class="form-control" required>
-                                <option value="" disabled selected>Select Service</option>
-                                <option>Lawn Mowing</option>
-                                <option>Hedge Trimming</option>
-                                <option>Weed Control</option>
-                                <option>Garden Cleanup</option>
-                                <option>Full Maintenance</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <textarea class="form-control" placeholder="Your Message" required></textarea>
-                        </div>
-                        <button type="submit" class="btn">Send Message</button>
-                    </form>
+                <div class="support-card">
+                    <h3>Need a different time?</h3>
+                    <p>Tell us what works for you and we’ll release bespoke slots outside standard hours.</p>
+                    <a class="btn" href="mailto:hello@payasyoumow.co.uk?subject=Custom%20Garden%20Quote"><i class="fas fa-envelope-open-text" aria-hidden="true"></i>&nbsp; Email the team</a>
                 </div>
             </div>
         </div>
     </section>
+
+    <div class="booking-modal" id="bookingModal" role="dialog" aria-modal="true" aria-hidden="true">
+        <div class="booking-modal-content" role="document">
+            <button class="booking-modal-close" type="button" id="bookingModalClose" aria-label="Close booking form">
+                <i class="fas fa-times"></i>
+            </button>
+            <header>
+                <h3>Confirm your quote visit</h3>
+            </header>
+            <p class="booking-summary" id="bookingSummary"></p>
+            <form class="booking-form" id="bookingForm">
+                <input type="hidden" id="selectedSlot" name="selectedSlot">
+                <div class="form-group">
+                    <label for="customerName">Your Name</label>
+                    <input type="text" id="customerName" name="customerName" placeholder="Full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="customerEmail">Email Address</label>
+                    <input type="email" id="customerEmail" name="customerEmail" placeholder="you@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="customerPhone">Phone Number</label>
+                    <input type="tel" id="customerPhone" name="customerPhone" placeholder="Mobile or landline" required>
+                </div>
+                <div class="form-group">
+                    <label for="customerNotes">Garden Notes (optional)</label>
+                    <textarea id="customerNotes" name="customerNotes" placeholder="Share gate codes, garden access, or special requests"></textarea>
+                </div>
+                <button type="submit" class="btn btn-secondary">Send Booking Request</button>
+                <div class="booking-confirmation" id="bookingConfirmation">Thank you! We’ve pencilled in your visit and will send confirmation shortly.</div>
+            </form>
+        </div>
+    </div>
 
     <a href="https://wa.me/447595289669" class="whatsapp-button" target="_blank" rel="noopener" aria-label="Chat with Pay As You Mow on WhatsApp">
         <span class="icon"><i class="fa-brands fa-whatsapp"></i></span>
@@ -1681,7 +2137,7 @@
                         <li><a href="#services">Services</a></li>
                         <li><a href="#about">About Us</a></li>
                         <li><a href="#faq">FAQ</a></li>
-                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#booking">Book</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
@@ -1914,14 +2370,337 @@
             document.body.appendChild(ytScript);
         }
 
-        // Form submission
-        const contactForm = document.getElementById('contactForm');
+        // Booking availability powered by Google Calendar
+        const bookingGrid = document.getElementById('bookingGrid');
+        const bookingStatus = document.getElementById('bookingStatus');
+        const bookingModal = document.getElementById('bookingModal');
+        const bookingModalClose = document.getElementById('bookingModalClose');
+        const bookingSummary = document.getElementById('bookingSummary');
+        const bookingForm = document.getElementById('bookingForm');
+        const bookingConfirmation = document.getElementById('bookingConfirmation');
+        const selectedSlotInput = document.getElementById('selectedSlot');
 
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Thank you for your message! We will get back to you soon.');
-            this.reset();
-        });
+        if (bookingGrid && bookingStatus && bookingModal && bookingForm && bookingSummary && bookingConfirmation && selectedSlotInput) {
+            const API_KEY = '165739256154-68t8gq34tnr7tllev1iclgrbdd7jatbn.apps.googleusercontent.com';
+            const CALENDAR_ID = bookingGrid.dataset.calendarId || 'primary';
+            const MAX_AVAILABLE_DAYS = 5;
+            const SLOT_DURATION_MINUTES = 30;
+            const START_HOUR = 18;
+            const END_HOUR = 20;
+            const LOOKAHEAD_DAYS = 45;
+            let lastFocusedElement = null;
+
+            const weekdayFormatter = new Intl.DateTimeFormat(undefined, { weekday: 'long' });
+            const dateFormatter = new Intl.DateTimeFormat(undefined, { month: 'long', day: 'numeric' });
+            const timeFormatter = new Intl.DateTimeFormat(undefined, { hour: 'numeric', minute: '2-digit' });
+
+            function parseEventDate(eventDate) {
+                if (!eventDate) {
+                    return null;
+                }
+
+                if (eventDate.dateTime) {
+                    return new Date(eventDate.dateTime);
+                }
+
+                if (eventDate.date) {
+                    return new Date(`${eventDate.date}T00:00:00`);
+                }
+
+                return null;
+            }
+
+            async function fetchCalendarEvents(timeMin, timeMax) {
+                const endpoint = new URL(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(CALENDAR_ID)}/events`);
+                endpoint.searchParams.set('key', API_KEY);
+                endpoint.searchParams.set('singleEvents', 'true');
+                endpoint.searchParams.set('orderBy', 'startTime');
+                endpoint.searchParams.set('timeMin', timeMin);
+                endpoint.searchParams.set('timeMax', timeMax);
+
+                const response = await fetch(endpoint.toString());
+                if (!response.ok) {
+                    throw new Error(`Calendar request failed with status ${response.status}`);
+                }
+
+                const data = await response.json();
+                if (data.error) {
+                    throw new Error(data.error.message || 'Calendar API returned an error');
+                }
+
+                return Array.isArray(data.items) ? data.items : [];
+            }
+
+            function isWeekday(date) {
+                const day = date.getDay();
+                return day >= 1 && day <= 5;
+            }
+
+            function generateSlotsForDay(dayDate) {
+                const slots = [];
+                const slotStart = new Date(dayDate);
+                slotStart.setHours(START_HOUR, 0, 0, 0);
+
+                const closingTime = new Date(dayDate);
+                closingTime.setHours(END_HOUR, 0, 0, 0);
+
+                while (slotStart < closingTime) {
+                    const slotEnd = new Date(slotStart.getTime() + SLOT_DURATION_MINUTES * 60000);
+                    slots.push({
+                        start: new Date(slotStart),
+                        end: new Date(slotEnd)
+                    });
+                    slotStart.setMinutes(slotStart.getMinutes() + SLOT_DURATION_MINUTES);
+                }
+
+                return slots;
+            }
+
+            function isSlotBooked(slotStart, slotEnd, events) {
+                return events.some(event => event.end > slotStart && event.start < slotEnd);
+            }
+
+            function buildDayAvailability(events) {
+                const availableDays = [];
+                const backupDays = [];
+                const cursor = new Date();
+                cursor.setHours(0, 0, 0, 0);
+
+                let inspectedDays = 0;
+                while ((availableDays.length < MAX_AVAILABLE_DAYS || backupDays.length < MAX_AVAILABLE_DAYS) && inspectedDays < LOOKAHEAD_DAYS) {
+                    if (isWeekday(cursor)) {
+                        const dayDate = new Date(cursor);
+                        const slots = generateSlotsForDay(dayDate).map(slot => {
+                            const booked = isSlotBooked(slot.start, slot.end, events);
+                            return { ...slot, booked };
+                        });
+                        const openSlots = slots.filter(slot => !slot.booked);
+                        const dayRecord = {
+                            date: new Date(dayDate),
+                            slots,
+                            availableSlots: openSlots
+                        };
+
+                        if (openSlots.length > 0 && availableDays.length < MAX_AVAILABLE_DAYS) {
+                            availableDays.push(dayRecord);
+                        } else if (backupDays.length < MAX_AVAILABLE_DAYS) {
+                            backupDays.push(dayRecord);
+                        }
+                    }
+
+                    cursor.setDate(cursor.getDate() + 1);
+                    inspectedDays += 1;
+                }
+
+                const combined = availableDays.concat(backupDays);
+                return combined.slice(0, MAX_AVAILABLE_DAYS);
+            }
+
+            function renderBookingDays(days, { fallback = false } = {}) {
+                bookingGrid.innerHTML = '';
+
+                if (!Array.isArray(days) || days.length === 0) {
+                    const emptyState = document.createElement('div');
+                    emptyState.className = 'booking-empty';
+                    emptyState.innerHTML = fallback
+                        ? '<strong>Calendar temporarily unavailable.</strong><br>Pick a slot below or call us while we reconnect your Google Calendar.'
+                        : '<strong>Evening slots are fully booked.</strong><br>Join the waitlist by calling or emailing our team.';
+                    bookingGrid.appendChild(emptyState);
+                    return;
+                }
+
+                days.forEach(day => {
+                    const card = document.createElement('article');
+                    card.className = 'booking-card';
+
+                    if (day.availableSlots.length === 0) {
+                        card.classList.add('is-full');
+                    } else if (day.availableSlots.length <= 2) {
+                        card.classList.add('is-limited');
+                    }
+
+                    const header = document.createElement('div');
+                    header.className = 'booking-card-header';
+
+                    const headingWrapper = document.createElement('div');
+                    const dayName = document.createElement('div');
+                    dayName.className = 'booking-day';
+                    dayName.textContent = weekdayFormatter.format(day.date);
+
+                    const dateLabel = document.createElement('div');
+                    dateLabel.className = 'booking-date';
+                    dateLabel.textContent = dateFormatter.format(day.date);
+
+                    headingWrapper.append(dayName, dateLabel);
+
+                    const pill = document.createElement('span');
+                    pill.className = 'availability-pill';
+                    const pillIcon = document.createElement('i');
+                    const openCount = day.availableSlots.length;
+                    let pillText = '';
+
+                    if (openCount === 0) {
+                        pillIcon.className = 'fas fa-circle-xmark';
+                        pillText = 'Fully booked';
+                    } else if (openCount === 1) {
+                        pillIcon.className = 'fas fa-hourglass-half';
+                        pillText = 'Last slot';
+                    } else {
+                        pillIcon.className = 'fas fa-circle-check';
+                        pillText = `${openCount} slots open`;
+                    }
+
+                    pill.append(pillIcon, document.createTextNode(` ${pillText}`));
+
+                    header.append(headingWrapper, pill);
+
+                    const slotWrapper = document.createElement('div');
+                    slotWrapper.className = 'booking-slots';
+
+                    day.slots.forEach(slot => {
+                        const button = document.createElement('button');
+                        button.type = 'button';
+                        button.className = 'slot-button';
+
+                        const startLabel = timeFormatter.format(slot.start);
+                        const endLabel = timeFormatter.format(slot.end);
+
+                        button.textContent = `${startLabel}`;
+                        button.title = `${weekdayFormatter.format(day.date)} ${dateFormatter.format(day.date)} · ${startLabel} - ${endLabel}`;
+
+                        if (slot.booked) {
+                            button.disabled = true;
+                            button.setAttribute('aria-label', `${startLabel} to ${endLabel} booked`);
+                        } else {
+                            button.dataset.start = slot.start.toISOString();
+                            button.dataset.end = slot.end.toISOString();
+                            button.dataset.day = day.date.toISOString();
+                            button.setAttribute('aria-label', `${startLabel} to ${endLabel} available`);
+                            button.addEventListener('click', () => {
+                                openBookingModal({
+                                    start: slot.start,
+                                    end: slot.end,
+                                    day: day.date
+                                });
+                            });
+                        }
+
+                        slotWrapper.appendChild(button);
+                    });
+
+                    card.append(header, slotWrapper);
+                    bookingGrid.appendChild(card);
+                });
+            }
+
+            function openBookingModal(slot) {
+                lastFocusedElement = document.activeElement;
+
+                bookingModal.classList.add('open');
+                bookingModal.setAttribute('aria-hidden', 'false');
+
+                const startLabel = timeFormatter.format(slot.start);
+                const endLabel = timeFormatter.format(slot.end);
+                bookingSummary.textContent = `${weekdayFormatter.format(slot.day)}, ${dateFormatter.format(slot.day)} · ${startLabel} – ${endLabel}`;
+                selectedSlotInput.value = `${slot.start.toISOString()}|${slot.end.toISOString()}`;
+                bookingConfirmation.classList.remove('visible');
+
+                requestAnimationFrame(() => {
+                    const firstField = bookingForm.querySelector('input, textarea, button');
+                    if (firstField) {
+                        firstField.focus();
+                    }
+                });
+            }
+
+            function closeBookingModal() {
+                bookingModal.classList.remove('open');
+                bookingModal.setAttribute('aria-hidden', 'true');
+                bookingSummary.textContent = '';
+                bookingConfirmation.classList.remove('visible');
+                bookingForm.reset();
+                selectedSlotInput.value = '';
+
+                if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+                    lastFocusedElement.focus();
+                }
+            }
+
+            if (bookingModalClose) {
+                bookingModalClose.addEventListener('click', closeBookingModal);
+            }
+            bookingModal.addEventListener('click', event => {
+                if (event.target === bookingModal) {
+                    closeBookingModal();
+                }
+            });
+
+            document.addEventListener('keydown', event => {
+                if (event.key === 'Escape' && bookingModal.classList.contains('open')) {
+                    closeBookingModal();
+                }
+            });
+
+            bookingForm.addEventListener('submit', event => {
+                event.preventDefault();
+
+                if (!selectedSlotInput.value) {
+                    bookingConfirmation.textContent = 'Please choose an appointment slot to continue.';
+                    bookingConfirmation.classList.add('visible');
+                    return;
+                }
+
+                bookingConfirmation.textContent = 'Thank you! We’ve pencilled in your visit and will send confirmation shortly.';
+                bookingConfirmation.classList.add('visible');
+
+                setTimeout(() => {
+                    closeBookingModal();
+                }, 2200);
+            });
+
+            async function loadCalendarAvailability() {
+                bookingGrid.setAttribute('aria-busy', 'true');
+                bookingStatus.textContent = 'Checking the latest availability…';
+
+                const now = new Date();
+                const searchEnd = new Date(now);
+                searchEnd.setDate(searchEnd.getDate() + LOOKAHEAD_DAYS);
+
+                try {
+                    const events = await fetchCalendarEvents(now.toISOString(), searchEnd.toISOString());
+                    const parsedEvents = events
+                        .filter(event => event && event.status !== 'cancelled')
+                        .map(event => ({
+                            start: parseEventDate(event.start),
+                            end: parseEventDate(event.end)
+                        }))
+                        .filter(event => event.start && event.end);
+
+                    const availability = buildDayAvailability(parsedEvents);
+                    renderBookingDays(availability);
+
+                    const daysWithOpenSlots = availability.filter(day => day.availableSlots.length > 0);
+                    const limitedDays = daysWithOpenSlots.filter(day => day.availableSlots.length <= 2);
+
+                    if (daysWithOpenSlots.length === 0) {
+                        bookingStatus.textContent = 'All evening consultations are currently booked. Tap a slot to join the waitlist or contact us for alternatives.';
+                    } else if (limitedDays.length > 0) {
+                        bookingStatus.textContent = 'Slots are almost gone—reserve your free quote visit now.';
+                    } else {
+                        bookingStatus.textContent = 'Evening appointments update instantly—select a time that suits you.';
+                    }
+                } catch (error) {
+                    console.error('Unable to load Google Calendar availability:', error);
+                    const fallbackAvailability = buildDayAvailability([]);
+                    renderBookingDays(fallbackAvailability, { fallback: true });
+                    bookingStatus.textContent = 'We couldn’t reach Google Calendar just now. Choose a slot below or call us and we’ll confirm for you.';
+                } finally {
+                    bookingGrid.setAttribute('aria-busy', 'false');
+                }
+            }
+
+            loadCalendarAvailability();
+        }
     </script>
 </body>
 </html>
