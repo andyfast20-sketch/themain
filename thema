@@ -926,6 +926,42 @@
             border-radius: inherit;
         }
 
+        .video-thumbnail {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease;
+            cursor: pointer;
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        .video-thumbnail::after {
+            content: 'Replay video';
+            font-size: 0.9rem;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            color: var(--white);
+            background: rgba(0, 0, 0, 0.65);
+            padding: 10px 22px;
+            border-radius: 999px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+        }
+
+        .video-thumbnail.visible {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
         @media (max-width: 1024px) {
             .video-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1478,8 +1514,8 @@
                     </div>
                     <h3>“My lawn has never felt this loved”</h3>
                     <p>Claire shares how easy scheduling and careful mowing revived her front garden and keeps it photo-ready.</p>
-                    <div class="video-frame">
-                        <iframe src="https://www.youtube.com/embed/pcQuRLu64-g?si=O2Rt4JNLHxFpcFPf&amp;rel=0" title="Claire talks about Pay As You Mow" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    <div class="video-frame" data-video-id="pcQuRLu64-g">
+                        <iframe src="https://www.youtube.com/embed/pcQuRLu64-g?si=O2Rt4JNLHxFpcFPf&amp;rel=0&amp;enablejsapi=1" title="Claire talks about Pay As You Mow" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                     </div>
                 </article>
                 <article class="video-card">
@@ -1489,8 +1525,8 @@
                     </div>
                     <h3>“Pay as you go was the game changer”</h3>
                     <p>James explains why flexible visits and tidy finishes make Pay As You Mow the perfect fit for his busy schedule.</p>
-                    <div class="video-frame">
-                        <iframe src="https://www.youtube.com/embed/hBbBok5MkQY?si=GS8SKBmV6uUDwKQ9&amp;rel=0" title="James shares his Pay As You Mow experience" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    <div class="video-frame" data-video-id="hBbBok5MkQY">
+                        <iframe src="https://www.youtube.com/embed/hBbBok5MkQY?si=GS8SKBmV6uUDwKQ9&amp;rel=0&amp;enablejsapi=1" title="James shares his Pay As You Mow experience" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                     </div>
                 </article>
                 <article class="video-card">
@@ -1500,8 +1536,8 @@
                     </div>
                     <h3>“From overgrown to outstanding”</h3>
                     <p>Helen walks through her transformed borders and the peace of mind that comes with a meticulous gardener.</p>
-                    <div class="video-frame">
-                        <iframe src="https://www.youtube.com/embed/enB1NOnPrhY?si=EIDoJoJhiP-LsMMZ&amp;rel=0" title="Helen's Pay As You Mow testimonial" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    <div class="video-frame" data-video-id="enB1NOnPrhY">
+                        <iframe src="https://www.youtube.com/embed/enB1NOnPrhY?si=EIDoJoJhiP-LsMMZ&amp;rel=0&amp;enablejsapi=1" title="Helen's Pay As You Mow testimonial" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                     </div>
                 </article>
             </div>
@@ -1768,16 +1804,16 @@
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
-                
+
                 const targetId = this.getAttribute('href');
                 if (targetId === '#') return;
-                
+
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
                     // Close mobile menu if open
                     nav.classList.remove('active');
                     mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
-                    
+
                     window.scrollTo({
                         top: targetElement.offsetTop - 80,
                         behavior: 'smooth'
@@ -1786,9 +1822,101 @@
             });
         });
 
+        // YouTube community video thumbnails
+        const communityVideoFrames = Array.from(document.querySelectorAll('.video-showcase .video-frame'));
+        const youtubePlayers = [];
+        const youtubeOverlays = [];
+
+        function addThumbnailOverlay(frame, index) {
+            const iframe = frame.querySelector('iframe');
+            if (!iframe) {
+                return;
+            }
+
+            const videoId = frame.dataset.videoId;
+            if (!videoId) {
+                return;
+            }
+
+            if (!iframe.src.includes('enablejsapi=1')) {
+                const separator = iframe.src.includes('?') ? '&' : '?';
+                iframe.src = `${iframe.src}${separator}enablejsapi=1`;
+            }
+
+            if (!iframe.id) {
+                iframe.id = `video-player-${index}`;
+            }
+
+            const overlay = document.createElement('div');
+            overlay.className = 'video-thumbnail';
+            overlay.style.backgroundImage = `url(https://img.youtube.com/vi/${videoId}/hqdefault.jpg)`;
+            overlay.setAttribute('role', 'button');
+            overlay.setAttribute('tabindex', '0');
+            overlay.setAttribute('aria-label', 'Replay video');
+
+            const replayVideo = () => {
+                overlay.classList.remove('visible');
+                const player = youtubePlayers[index];
+                if (player && typeof player.seekTo === 'function') {
+                    player.seekTo(0);
+                    player.playVideo();
+                }
+            };
+
+            overlay.addEventListener('click', replayVideo);
+            overlay.addEventListener('keydown', event => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    replayVideo();
+                }
+            });
+
+            frame.appendChild(overlay);
+            youtubeOverlays[index] = overlay;
+        }
+
+        function handleCommunityVideoState(event, overlay) {
+            if (!overlay || typeof YT === 'undefined' || !YT.PlayerState) {
+                return;
+            }
+
+            if (event.data === YT.PlayerState.ENDED) {
+                overlay.classList.add('visible');
+            } else if (event.data === YT.PlayerState.PLAYING) {
+                overlay.classList.remove('visible');
+            }
+        }
+
+        if (communityVideoFrames.length > 0) {
+            communityVideoFrames.forEach((frame, index) => {
+                addThumbnailOverlay(frame, index);
+            });
+
+            window.onYouTubeIframeAPIReady = function() {
+                communityVideoFrames.forEach((frame, index) => {
+                    const iframe = frame.querySelector('iframe');
+                    if (!iframe) {
+                        return;
+                    }
+
+                    const overlay = youtubeOverlays[index];
+
+                    youtubePlayers[index] = new YT.Player(iframe.id, {
+                        events: {
+                            onStateChange: event => handleCommunityVideoState(event, overlay)
+                        }
+                    });
+                });
+            };
+
+            const ytScript = document.createElement('script');
+            ytScript.src = 'https://www.youtube.com/iframe_api';
+            document.body.appendChild(ytScript);
+        }
+
         // Form submission
         const contactForm = document.getElementById('contactForm');
-        
+
         contactForm.addEventListener('submit', function(e) {
             e.preventDefault();
             alert('Thank you for your message! We will get back to you soon.');
