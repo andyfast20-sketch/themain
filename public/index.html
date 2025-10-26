@@ -2029,14 +2029,14 @@
             <div class="booking-header">
                 <span class="booking-eyebrow"><i class="fas fa-calendar-check" aria-hidden="true"></i> Reserve Your Free Quote</span>
                 <h2>Secure a 30-Minute Garden Consultation</h2>
-                <p>Choose an evening slot that suits you. We offer weekday consultations between <strong>6:00&nbsp;pm and 8:00&nbsp;pm</strong>, crafted to fit around busy schedules. Availability updates live from your connected Google Calendar.</p>
+                <p>Choose an evening slot that suits you. We offer weekday consultations between <strong>6:00&nbsp;pm and 8:00&nbsp;pm</strong>, crafted to fit around busy schedules. Availability updates instantly from our booking calendar.</p>
             </div>
 
             <div class="booking-steps" aria-label="How to book">
                 <article class="booking-step">
                     <strong>1</strong>
                     <h3>Select a day</h3>
-                    <p>Browse the next five weekday evenings with open times pulled directly from your calendar.</p>
+                    <p>Browse the next five weekday evenings with open times pulled directly from our live booking calendar.</p>
                 </article>
                 <article class="booking-step">
                     <strong>2</strong>
@@ -2046,13 +2046,13 @@
                 <article class="booking-step">
                     <strong>3</strong>
                     <h3>Confirm in seconds</h3>
-                    <p>Share the essentials and we’ll send a confirmation email plus a calendar invite automatically.</p>
+                    <p>Share the essentials and we’ll send a confirmation email with everything you need.</p>
                 </article>
             </div>
 
             <p class="booking-status" id="bookingStatus">Checking the latest availability…</p>
 
-            <div class="booking-grid" id="bookingGrid" aria-live="polite" aria-busy="true" data-calendar-id="primary" data-api-key="AIzaSyBNq41YmSJrEES1bRT3FYh8hbQ5ZhgvzCM"></div>
+            <div class="booking-grid" id="bookingGrid" aria-live="polite" aria-busy="true" data-booking-endpoint="/api/appointments"></div>
 
             <div class="booking-legend" role="list" aria-label="Availability legend">
                 <span class="legend-item" role="listitem"><span class="legend-dot available"></span> Plenty of slots</span>
@@ -2138,6 +2138,7 @@
                         <li><a href="#about">About Us</a></li>
                         <li><a href="#faq">FAQ</a></li>
                         <li><a href="#booking">Book</a></li>
+                        <li><a href="/admin">Admin</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
@@ -2370,7 +2371,7 @@
             document.body.appendChild(ytScript);
         }
 
-        // Booking availability powered by Google Calendar
+        // Booking availability powered by the built-in calendar
         const bookingGrid = document.getElementById('bookingGrid');
         const bookingStatus = document.getElementById('bookingStatus');
         const bookingModal = document.getElementById('bookingModal');
@@ -2381,10 +2382,7 @@
         const selectedSlotInput = document.getElementById('selectedSlot');
 
         if (bookingGrid && bookingStatus && bookingModal && bookingForm && bookingSummary && bookingConfirmation && selectedSlotInput) {
-            const API_KEY = bookingGrid.dataset.apiKey || 'AIzaSyBNq41YmSJrEES1bRT3FYh8hbQ5ZhgvzCM';
-            const CALENDAR_ID = bookingGrid.dataset.calendarId || 'primary';
-            const CALENDAR_TOKEN = bookingGrid.dataset.calendarToken || (typeof window !== 'undefined' ? window.GOOGLE_CALENDAR_TOKEN : '') || '';
-            const BOOKING_ENDPOINT = bookingGrid.dataset.bookingEndpoint || '';
+            const BOOKING_ENDPOINT = bookingGrid.dataset.bookingEndpoint || '/api/appointments';
             const MAX_AVAILABLE_DAYS = 5;
             const SLOT_DURATION_MINUTES = 30;
             const START_HOUR = 18;
@@ -2403,38 +2401,39 @@
                     return null;
                 }
 
-                if (eventDate.dateTime) {
-                    return new Date(eventDate.dateTime);
+                const parsed = new Date(eventDate);
+                if (Number.isNaN(parsed.getTime())) {
+                    return null;
                 }
 
-                if (eventDate.date) {
-                    return new Date(`${eventDate.date}T00:00:00`);
-                }
-
-                return null;
+                return parsed;
             }
 
             async function fetchCalendarEvents(timeMin, timeMax) {
-                const endpoint = new URL(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(CALENDAR_ID)}/events`);
-                if (API_KEY) {
-                    endpoint.searchParams.set('key', API_KEY);
+                const endpoint = new URL(BOOKING_ENDPOINT, window.location.origin);
+                if (timeMin) {
+                    endpoint.searchParams.set('start', timeMin);
                 }
-                endpoint.searchParams.set('singleEvents', 'true');
-                endpoint.searchParams.set('orderBy', 'startTime');
-                endpoint.searchParams.set('timeMin', timeMin);
-                endpoint.searchParams.set('timeMax', timeMax);
+                if (timeMax) {
+                    endpoint.searchParams.set('end', timeMax);
+                }
 
-                const response = await fetch(endpoint.toString());
+                const response = await fetch(endpoint.toString(), {
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
                 if (!response.ok) {
                     throw new Error(`Calendar request failed with status ${response.status}`);
                 }
 
                 const data = await response.json();
-                if (data.error) {
-                    throw new Error(data.error.message || 'Calendar API returned an error');
+                if (Array.isArray(data.appointments)) {
+                    return data.appointments;
                 }
 
-                return Array.isArray(data.items) ? data.items : [];
+                return Array.isArray(data) ? data : [];
             }
 
             function isWeekday(date) {
@@ -2509,7 +2508,7 @@
                     const emptyState = document.createElement('div');
                     emptyState.className = 'booking-empty';
                     emptyState.innerHTML = fallback
-                        ? '<strong>Calendar temporarily unavailable.</strong><br>Pick a slot below or call us while we reconnect your Google Calendar.'
+                        ? '<strong>Calendar temporarily unavailable.</strong><br>Pick a slot below or call us while we refresh the schedule for you.'
                         : '<strong>Evening slots are fully booked.</strong><br>Join the waitlist by calling or emailing our team.';
                     bookingGrid.appendChild(emptyState);
                     return;
@@ -2677,105 +2676,42 @@
             }
 
             async function createCalendarEvent(eventDetails) {
-                const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
                 const payload = {
                     summary: eventDetails.summary,
                     description: eventDetails.description,
-                    start: {
-                        dateTime: eventDetails.start,
-                        timeZone
-                    },
-                    end: {
-                        dateTime: eventDetails.end,
-                        timeZone
-                    },
-                    attendees: eventDetails.attendees,
-                    reminders: {
-                        useDefault: true
-                    },
-                    source: typeof window !== 'undefined' && window.location ? {
-                        title: typeof document !== 'undefined' && document.title ? document.title : 'Pay As You Mow',
-                        url: window.location.href
-                    } : undefined
+                    start: eventDetails.start,
+                    end: eventDetails.end,
+                    customerName: eventDetails.metadata?.customerName,
+                    customerEmail: eventDetails.metadata?.customerEmail,
+                    customerPhone: eventDetails.metadata?.customerPhone,
+                    customerNotes: eventDetails.metadata?.customerNotes
                 };
 
-                if (eventDetails.location) {
-                    payload.location = eventDetails.location;
-                }
-
-                if (eventDetails.metadata) {
-                    const privateProperties = {};
-
-                    if (eventDetails.metadata.customerPhone) {
-                        privateProperties.customerPhone = eventDetails.metadata.customerPhone;
-                    }
-
-                    if (eventDetails.metadata.customerNotes) {
-                        privateProperties.customerNotes = eventDetails.metadata.customerNotes;
-                    }
-
-                    if (Object.keys(privateProperties).length > 0) {
-                        payload.extendedProperties = {
-                            private: privateProperties
-                        };
-                    }
-                }
-
-                if (!Array.isArray(payload.attendees) || payload.attendees.length === 0) {
-                    delete payload.attendees;
-                }
-
-                const requestInit = {
+                const response = await fetch(BOOKING_ENDPOINT, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
                     },
                     body: JSON.stringify(payload)
-                };
+                });
 
-                if (BOOKING_ENDPOINT) {
-                    const response = await fetch(BOOKING_ENDPOINT, {
-                        ...requestInit,
-                        body: JSON.stringify({
-                            calendarId: CALENDAR_ID,
-                            event: payload
-                        })
-                    });
-                    if (!response.ok) {
-                        const errorText = await response.text().catch(() => '');
-                        throw new Error(errorText || `Booking endpoint responded with status ${response.status}`);
-                    }
-                    return response.json().catch(() => null);
+                let data = null;
+                try {
+                    data = await response.json();
+                } catch (error) {
+                    data = null;
                 }
-
-                const endpoint = new URL(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(CALENDAR_ID)}/events`);
-
-                if (CALENDAR_TOKEN) {
-                    requestInit.headers.Authorization = `Bearer ${CALENDAR_TOKEN}`;
-                } else if (API_KEY) {
-                    endpoint.searchParams.set('key', API_KEY);
-                }
-
-                const response = await fetch(endpoint.toString(), requestInit);
 
                 if (!response.ok) {
-                    let errorMessage = `Calendar request failed with status ${response.status}`;
-                    try {
-                        const errorBody = await response.json();
-                        if (errorBody && errorBody.error && errorBody.error.message) {
-                            errorMessage = errorBody.error.message;
-                        }
-                    } catch (parseError) {
-                        const fallbackText = await response.text().catch(() => '');
-                        if (fallbackText) {
-                            errorMessage = fallbackText;
-                        }
+                    const error = new Error((data && data.message) || 'Unable to save appointment.');
+                    if (data && data.error) {
+                        error.code = data.error;
                     }
-
-                    throw new Error(errorMessage);
+                    throw error;
                 }
 
-                return response.json().catch(() => null);
+                return data && data.appointment ? data.appointment : null;
             }
 
             if (bookingModalClose) {
@@ -2835,10 +2771,6 @@
                     description,
                     start: slotStart,
                     end: slotEnd,
-                    attendees: customerEmail ? [{
-                        email: customerEmail,
-                        displayName: customerName || undefined
-                    }] : [],
                     metadata: {
                         customerName,
                         customerEmail,
@@ -2855,7 +2787,7 @@
 
                 try {
                     await createCalendarEvent(eventDetails);
-                    bookingConfirmation.textContent = 'All set! We’ve added the visit to your calendar and emailed the details.';
+                    bookingConfirmation.textContent = 'All set! Your visit is locked in—we’ll confirm the details shortly.';
                     await loadCalendarAvailability();
                     submissionSucceeded = true;
 
@@ -2863,8 +2795,12 @@
                         closeBookingModal();
                     }, 2200);
                 } catch (error) {
-                    console.error('Failed to create calendar event:', error);
-                    bookingConfirmation.textContent = 'We couldn’t save your booking automatically. Please call or email us and we’ll confirm it manually.';
+                    console.error('Failed to save appointment:', error);
+                    if (error && error.code === 'SlotUnavailable') {
+                        bookingConfirmation.textContent = 'That slot was just taken. Please choose another time and we’ll keep it for you.';
+                    } else {
+                        bookingConfirmation.textContent = 'We couldn’t save your booking automatically. Please call or email us and we’ll confirm it manually.';
+                    }
                     bookingConfirmation.classList.add('visible');
                 } finally {
                     bookingSubmissionInFlight = false;
@@ -2885,7 +2821,6 @@
                 try {
                     const events = await fetchCalendarEvents(now.toISOString(), searchEnd.toISOString());
                     const parsedEvents = events
-                        .filter(event => event && event.status !== 'cancelled')
                         .map(event => ({
                             start: parseEventDate(event.start),
                             end: parseEventDate(event.end)
@@ -2906,10 +2841,10 @@
                         bookingStatus.textContent = 'Evening appointments update instantly—select a time that suits you.';
                     }
                 } catch (error) {
-                    console.error('Unable to load Google Calendar availability:', error);
+                    console.error('Unable to load appointment availability:', error);
                     const fallbackAvailability = buildDayAvailability([]);
                     renderBookingDays(fallbackAvailability, { fallback: true });
-                    bookingStatus.textContent = 'We couldn’t reach Google Calendar just now. Choose a slot below or call us and we’ll confirm for you.';
+                    bookingStatus.textContent = 'We couldn’t load availability right now. Choose a slot below or contact us and we’ll confirm for you.';
                 } finally {
                     bookingGrid.setAttribute('aria-busy', 'false');
                 }
